@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SETTING>
+
+	<language name="C" extension=".c">
+		<code filename="main">
+		</code>
+		
+	</language>
+	
+	<language name="C++" extension=".cpp">
+		<code filename="main">
+#include &lt; stdlib &gt;
+#include &lt; iostram &gt;
+		</code>
+	</language>
+
+	<language name="C#" extension=".cs">
+		<code filename="main">
+		</code>
+	</language>
+	
+	<language name="Python" extension=".py">
+		<code filename="main">
+		</code>
+	</language>
+
+	<language name="JavaScript" extension=".js">
+		<code filename="main">
+		</code>
+	</language>
+
+	<language name="Java" extension=".jar">
+		<code filename="main">
+		</code>
+	</language>
+
+	<language name="GO" extension=".go">
+		<code filename="main">
+		</code>
+	</language>
+
+	<language name="HTML" extension=".html">
+		<code filename="main">
+		</code>
+	</language>
+
+
+
+
+</SETTING>
