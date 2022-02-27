@@ -1,46 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SETTING>
 
-	<language name="C" extension=".c">
-		<code filename="main">
+	<language name="C" >
+		<code filename="main" extension=".c">
 		</code>
 		
 	</language>
 	
-	<language name="C++" extension=".cpp">
-		<code filename="main">
+	<language name="C++" >
+		<code filename="main" extension=".cpp">
 #include &lt; stdlib &gt;
 #include &lt; iostram &gt;
 		</code>
 	</language>
 
-	<language name="C#" extension=".cs">
-		<code filename="main">
+	<language name="C#" >
+		<code filename="main" extension=".cs">
 		</code>
 	</language>
 	
-	<language name="Python" extension=".py">
-		<code filename="main">
+	<language name="Python" >
+		<code filename="main" extension=".py">
 		</code>
 	</language>
 
-	<language name="JavaScript" extension=".js">
-		<code filename="main">
+	<language name="JavaScript" >
+		<code filename="main" extension=".js">
 		</code>
 	</language>
 
-	<language name="Java" extension=".jar">
-		<code filename="main">
+	<language name="Java" >
+		<code filename="main" extension=".jar">
 		</code>
 	</language>
 
-	<language name="GO" extension=".go">
-		<code filename="main">
+	<language name="GO" >
+		<code filename="main" extension=".go">
 		</code>
 	</language>
 
-	<language name="HTML" extension=".html">
-		<code filename="main">
+	<language name="HTML" >
+		<code filename="main" extension=".html">
 		</code>
 	</language>
 

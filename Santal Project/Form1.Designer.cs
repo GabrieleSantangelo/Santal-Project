@@ -38,6 +38,7 @@
             this.Gitselection = new System.Windows.Forms.CheckBox();
             this.FileOpen = new System.Windows.Forms.CheckBox();
             this.OpenFolder = new System.Windows.Forms.CheckBox();
+            this.Add_Language = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // languageList
@@ -126,11 +127,22 @@
             this.OpenFolder.Text = "Open Folder";
             this.OpenFolder.UseVisualStyleBackColor = true;
             // 
+            // Add_Language
+            // 
+            this.Add_Language.Location = new System.Drawing.Point(230, 424);
+            this.Add_Language.Name = "Add_Language";
+            this.Add_Language.Size = new System.Drawing.Size(120, 29);
+            this.Add_Language.TabIndex = 9;
+            this.Add_Language.Text = "Add Language";
+            this.Add_Language.UseVisualStyleBackColor = true;
+            this.Add_Language.Click += new System.EventHandler(this.Add_Language_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(462, 465);
+            this.Controls.Add(this.Add_Language);
             this.Controls.Add(this.OpenFolder);
             this.Controls.Add(this.FileOpen);
             this.Controls.Add(this.Gitselection);
@@ -162,5 +174,6 @@
         private CheckBox Gitselection;
         private CheckBox FileOpen;
         private CheckBox OpenFolder;
+        private Button Add_Language;
     }
 }

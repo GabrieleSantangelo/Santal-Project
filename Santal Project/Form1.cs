@@ -18,12 +18,32 @@ namespace Santal_Project
         public string folder;
         public XDocument element;
 
+        public void load_element()
+        {
+            element = XDocument.Load("Setting.xml");
+            var query = from lan in element.Descendants("language")
+                        orderby lan.Attribute("name").Value
+                        select new
+                        {
+                            code = lan.Element("code").Value,
+                            languagename = lan.Attribute("name").Value,
+                            extension = lan.Attribute("extension")
+                        };
+            foreach (var item in query)
+            {
+                if (!(Directory.Exists(Path.Combine(folder, item.languagename))))
+                {
+                    Directory.CreateDirectory(Path.Combine(folder, item.languagename));
+                }
+                languageList.Items.Add(item.languagename);
 
-        public bool ErrorType()
+            }
+        }
+        public bool ErrorType(string text)
         {
             int n=0;
             bool valuereturn = false;
-            if (projectName.Text.Trim() == "") 
+            if (text == "") 
             {
                 n = 1;
             }
@@ -31,7 +51,12 @@ namespace Santal_Project
             {
                 n = n + 2;
             }
-
+            Debug.WriteLine(Path.Combine(folder, projectName.Text));
+            if (Directory.Exists(Path.Combine(folder, languageList.Text, projectName.Text)) && n==0){
+                Debug.WriteLine(Path.Combine(folder, projectName.Text));
+                MessageBox.Show("Esiste già un progetto con questo nome", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                valuereturn = true;
+            }
             switch (n)
             {
                 case 1:
@@ -89,24 +114,8 @@ namespace Santal_Project
             {
                Directory.CreateDirectory(folder);
             }
-            element = XDocument.Load("Setting.xml");
-            var query = from lan in element.Descendants("language")
-                                     orderby lan.Attribute("name").Value
-                                     select new
-                                     {
-                                         code = lan.Element("code").Value,
-                                         languagename = lan.Attribute("name").Value,
-                                         extension = lan.Attribute("extension")
-                                     };
-            foreach (var item in query)
-            {
-                if (!(Directory.Exists(Path.Combine(folder, item.languagename))))
-                {
-                    Directory.CreateDirectory(Path.Combine(folder, item.languagename));
-                }
-                languageList.Items.Add(item.languagename);
-               
-            }
+            load_element();
+            
            
             
         }
@@ -114,7 +123,7 @@ namespace Santal_Project
         private void createButton_Click(object sender, EventArgs e)
         {
             string text = projectName.Text.Trim();
-            if (!ErrorType())
+            if (!ErrorType(text))
             {
                 string extension="";
                 var query = from lan in element.Descendants("language")
@@ -125,7 +134,7 @@ namespace Santal_Project
                                 code = lan.Element("code").Value,
                                 filename =lan.Element("code").Attribute("filename").Value,
                                 languagename = lan.Attribute("name").Value,
-                                extension = lan.Attribute("extension").Value
+                                extension = lan.Element("code").Attribute("extension").Value
                             };
                 string projectfolder = Path.Combine(folder, languageList.Text, projectName.Text);
                 Directory.CreateDirectory(projectfolder);
@@ -146,6 +155,14 @@ namespace Santal_Project
             }
             
 
+        }
+
+        private void Add_Language_Click(object sender, EventArgs e)
+        {
+            
+            AggiuntaLinguaggio form2 = new AggiuntaLinguaggio();
+            form2.ShowDialog();
+            load_element();
         }
     }
 }
