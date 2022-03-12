@@ -20,6 +20,7 @@ namespace Santal_Project
 
         public void load_element()
         {
+            languageList.Items.Clear();
             element = XDocument.Load("Setting.xml");
             var query = from lan in element.Descendants("language")
                         orderby lan.Attribute("name").Value
@@ -86,7 +87,7 @@ namespace Santal_Project
             }
             if (FileOpen.Checked)
             {
-                Process.Start("explorer.exe", Path.Combine(projectfolder, $"main.{extension}"));
+                Process.Start("explorer.exe", Path.Combine(projectfolder, $"main{extension}"));
                 // Process.Start(Path.Combine(projectfolder, $"main.{extension}"));      
             }
             if (OpenFolder.Checked)
@@ -129,12 +130,13 @@ namespace Santal_Project
                 var query = from lan in element.Descendants("language")
                             orderby lan.Attribute("name").Value
                             where lan.Attribute("name").Value == languageList.Text
+                            from langua in lan.Descendants("code")
                             select new
                             {
-                                code = lan.Element("code").Value,
-                                filename =lan.Element("code").Attribute("filename").Value,
+                                code = langua.Value,
+                                filename =langua.Attribute("filename").Value,
                                 languagename = lan.Attribute("name").Value,
-                                extension = lan.Element("code").Attribute("extension").Value
+                                extension = langua.Attribute("extension").Value
                             };
                 string projectfolder = Path.Combine(folder, languageList.Text, projectName.Text);
                 Directory.CreateDirectory(projectfolder);
@@ -144,9 +146,14 @@ namespace Santal_Project
                     {
                         extension = item.extension;
                     }
-                    using (FileStream fs = File.Create(Path.Combine(projectfolder, $"{item.filename}.{item.extension}")))
+                    using (FileStream fs = File.Create(Path.Combine(projectfolder, $"{item.filename}{item.extension}")))
                     {
-                        byte[] info = new UTF8Encoding(true).GetBytes(item.code);
+                        int length = (item.code.Length + 1) / 3;
+                        byte[] arr1 = new byte[length];
+                        for (int i = 0; i < length; i++)
+                            arr1[i] = Convert.ToByte(item.code.Substring(3 * i, 2), 16);
+
+                        byte[] info = arr1;
                         fs.Write(info, 0, info.Length);
                     }
                 }

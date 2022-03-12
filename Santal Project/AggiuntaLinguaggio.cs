@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Xml;
 
 namespace Santal_Project
 {
@@ -32,7 +34,7 @@ namespace Santal_Project
             {
                 n = n + 2;
             }
-            if (textBox2.Text.ToLower().Contains("main"))
+            if (!(textBox2.Text.ToLower().Contains("main")))
             {
                 n = n + 5;
             }
@@ -71,7 +73,7 @@ namespace Santal_Project
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = "c:\\";
-                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog.Filter = "All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
                 openFileDialog.Multiselect = true;
@@ -99,20 +101,45 @@ namespace Santal_Project
         {
             if (!ErrorType())
             {
-
-                
-                List<code> codeelement= new List<code>();
-                foreach(var item in fileContent)
-                {
-                    var b = new byte[item.Length];
-                    item.Read(b,0, b.Length);
-                    codeelement.Add(new code() {filename=Path.GetFileName(item.Name), extension=Path.GetExtension(item.Name), data = b});
-                }
-                language languageadd = new language() {Name = textBox1.Text, codes=codeelement };
-
-
+                bool present=false;
                 XDocument element = XDocument.Load("Setting.xml");
-              //  element.Add(new XElement("language", new XAttribute("name", textBox1.Text.Trim()), new XAttribute("extension", ) ));
+                var query = from lan in element.Descendants("language")
+                            where lan.Attribute("name").Value.ToLower() == textBox1.Text.ToLower().Trim()
+                            select present= true;
+                foreach (var q in query)
+                {
+                    Debug.WriteLine($"Linguaggio presente: {present}");
+                }
+                
+                if (!present)
+                {
+                    List<code> codeelement = new List<code>();
+                    foreach (var item in fileContent)
+                    {
+                        var b = new byte[item.Length];
+                        item.Read(b, 0, b.Length);
+                        codeelement.Add(new code() { filename = Path.GetFileNameWithoutExtension(item.Name), extension = Path.GetExtension(item.Name), data = b });
+                    }
+                    language languageadd = new language() { Name = textBox1.Text, codes = codeelement };
+
+
+
+                    XElement newelement = new XElement("language", new XAttribute("name", languageadd.Name.ToUpper()),
+                        from item in languageadd.codes
+                        select new XElement("code", new XAttribute("extension", item.extension), new XAttribute("filename", item.filename), BitConverter.ToString(item.data))
+                        );
+
+                    element.Root.Add(newelement);
+                   // Debug.WriteLine(element);
+                    element.Save(Path.Combine(Application.StartupPath, "Setting.xml"));
+                    MessageBox.Show("Linguaggio aggiunto correttamente", "Aggiunto", MessageBoxButtons.OK);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Linguaggio già esistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                
             }
         }
     }
